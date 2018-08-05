@@ -1,4 +1,4 @@
-apt-get install hostapd dnsmasq avahi-utils iftop
+apt-get install hostapd dnsmasq avahi-utils iftop python-pip
 
 systemctl mask wpa_supplicant.service
 systemctl mask dnsmasq.service
