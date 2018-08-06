@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @atexit.register
 def exit():
-  print("Exited")
+  print("Terminating...")
 
 # Response example: {"Tp-Link": -87, "dd-wrt": -83, "CECCHI'S WIFI": -71}
 @app.route('/scan', methods=['GET'])
@@ -28,14 +28,26 @@ def scan():
     return 'Unable to scan for wifi networks', 500
   return json.dumps(networks), 200
 
-# Request example: curl -X PUT -H 'Content-Type: application/json' -d '{"ssid":"Cecchi WI-FI","psk":"16071607"}' localhost:6000/connect
+# Request example: curl -X PUT -H 'Content-Type: application/json' -d '{"ssid":"CECCHI'\''WI-FI","psk":"16071607"}' localhost:6000/connect
 @app.route('/connect', methods=['PUT'])
 def connect():
   req = request.get_json()
-  print(req['ssid'])
-  print(req['psk'])
-  output = subprocess.check_output(["wpa_cli -i wlan0 scan"], stderr=subprocess.STDOUT, shell=True).strip()
-  return 'ok',200
+  print("Connecting to network " + req['ssid'] + " with password " + req['psk'])
+  network_index = subprocess.check_output(["wpa_cli","-i","wlan0","add_network"], stderr=subprocess.STDOUT, shell=False).strip()
+  set_ssid = subprocess.check_output(["wpa_cli","-i","wlan0","set_network",network_index,"ssid","\"" + req["ssid"] + "\""], stderr=subprocess.STDOUT, shell=False).strip()
+  set_psk = subprocess.check_output(["wpa_cli","-i","wlan0","set_network",network_index,"psk","\"" + req["psk"] + "\""], stderr=subprocess.STDOUT, shell=False).strip()
+  select_network = subprocess.check_output(["wpa_cli -i wlan0 select_network " + network_index], stderr=subprocess.STDOUT, shell=True).strip()
+  if set_ssid == "OK" and set_psk == "OK" and select_network == "OK":
+    for i in range(5):
+      status = subprocess.call(["wpa_cli -i wlan0 status | grep --quiet wpa_state=COMPLETED"], shell=True)
+      if status ==  0:
+        # Delete old networks
+        for j in range(int(network_index)):
+          subprocess.check_output(["wpa_cli","-i","wlan0","remove_network",str(j)], stderr=subprocess.STDOUT, shell=False).strip()
+        subprocess.check_output(["wpa_cli -i wlan0 save_config"], shell=True)
+        return "SUCCESS", 200
+      time.sleep(3)
+  return "FAILURE", 500
 
 # Response example: {"group_cipher": "TKIP", "ssid": "Tp-Link", "bssid": "50:64:2b:2b:36:0e", "p2p_device_address": "aa:e8:af:51:86:c8", "wpa_state": "COMPLETED", "uuid": "ceecde00-5c31-5b88-aa3d-296871497f75", "mode": "station", "address": "b8:27:eb:e0:49:6f", "freq": "2427", "key_mgmt": "WPA2-PSK", "ip_address": "192.168.1.114", "id": "0", "pairwise_cipher": "CCMP"}
 @app.route('/status', methods=['GET'])
