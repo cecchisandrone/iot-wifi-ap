@@ -36,3 +36,7 @@ sleep 5
 
 # Start wpa_supplicant
 wpa_supplicant -Dnl80211 -iwlan0 -c/home/pi/iot-wifi-ap/wpa_supplicant_ap.conf > /var/log/iot-wifi-ap/wpa_supplicant.log 2>&1 &
+
+# Start wifi service
+python /home/pi/iot-wifi-ap/wifi_service.py > /var/log/iot-wifi-ap/wifi_service.log 2>&1 &
+

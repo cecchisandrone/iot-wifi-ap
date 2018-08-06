@@ -61,5 +61,6 @@ def status():
   return json.dumps(dict), 200
 
 if __name__ == '__main__':
+  print("Starting WI-FI service...")
   app.run(host='0.0.0.0', port=6000)
 
