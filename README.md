@@ -33,7 +33,24 @@ The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
 }
 
 ````
-- GET /status - Returns the wpa_supplicant status
+- GET /status - Returns the wpa_supplicant status. For example:
+````
+{
+  "group_cipher": "CCMP", 
+  "ssid": "Tp-Link", 
+  "bssid": "ec:08:6b:b5:5e:14", 
+  "p2p_device_address": "16:14:48:e2:8f:2d", 
+  "wpa_state": "COMPLETED", 
+  "uuid": "ceecde00-5c31-5b88-aa3d-296871497f75", 
+  "mode": "station", 
+  "address": "b8:27:eb:e0:49:6f", 
+  "freq": "2427", 
+  "key_mgmt": "WPA2-PSK", 
+  "ip_address": "192.168.1.114", 
+  "id": "0", 
+  "pairwise_cipher": "CCMP"
+}
+````
 - PUT /connect - Joins a network with ssid and password, using the following JSON body:
 ````
 {
