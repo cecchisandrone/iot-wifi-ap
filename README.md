@@ -9,7 +9,8 @@ The main purpose of this project is to give the right isolation to the devices o
 2. Clone this repo `git clone https://github.com/cecchisandrone/iot-wifi-ap.git` in `/home/pi`
 3. Run `sudo install.sh`
 4. Edit file `hostapd.conf` to change Wi-Fi preferences (ssid, psk, channel and others)
-5. Reboot your PI
+5. Edit file `wifi_service.cfg` to change wifi service preferences
+6. Reboot your PI
 
 ## First run
 At boot, `run.sh` is executed and the following steps are done:
@@ -33,7 +34,7 @@ The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
 }
 
 ````
-- GET /status - Returns the wpa_supplicant status. For example:
+- GET /wpa-status - Returns the wpa_supplicant status. For example:
 ````
 {
   "group_cipher": "CCMP", 
@@ -51,6 +52,7 @@ The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
   "pairwise_cipher": "CCMP"
 }
 ````
+- GET /connectivity-status - Returns 200 if there is connectivity with CONNECTIVITY_ENDPOINT, 500 otherwise. Useful to check internet connectivity
 - PUT /connect - Joins a network with ssid and password, using the following JSON body:
 ````
 {
