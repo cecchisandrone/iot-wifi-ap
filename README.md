@@ -1,4 +1,4 @@
-# Wi-Fi AP scripts for Raspberry PI (Debian Stretch)
+# Wireless access point scripts for Raspberry PI (Debian Stretch)
 These scripts allow a Raspberry to work as Wi-Fi Access Point with internet connection. 
 A set of HTTP APIs are exposed to permit the development of a UI to select which Wi-Fi for internet access.
 The main purpose of this project is to give the right isolation to the devices of an IoT network, while giving them the possibility of accessing the outside network.
