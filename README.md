@@ -23,7 +23,7 @@ At this point the AP network is created, with the parameters defined into `hosta
 You need to call the HTTP APIs to choose which network to join.
 
 ## API
-The following endpoints are available:
+The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
 
 - GET /scan - Returns a list of available Wi-Fi networks with signal quality. For example: 
 ````
