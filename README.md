@@ -7,7 +7,7 @@ The main purpose of this project is to give the right isolation to the devices o
 
 1. Install Debian Stretch on SD card and login your PI
 2. Clone this repo `git clone https://github.com/cecchisandrone/iot-wifi-ap.git` in `/home/pi`
-3. Run: `sudo install.sh`
+3. Run `sudo install.sh`
 4. Edit file `hostapd.conf` to change Wi-Fi preferences (ssid, psk, channel and others)
 5. Reboot your PI
 
@@ -25,7 +25,14 @@ You need to call the HTTP APIs to choose which network to join.
 ## API
 The following endpoints are available:
 
-- GET /scan - Returns a list of available Wi-Fi networks
+- GET /scan - Returns a list of available Wi-Fi networks with signal quality. For example: 
+````
+{
+  "network1" : "-76",
+  "network2" : "-45"
+}
+
+````
 - GET /status - Returns the wpa_supplicant status
 - PUT /connect - Joins a network with ssid and password, using the following JSON body:
 ````
