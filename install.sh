@@ -11,4 +11,4 @@ systemctl restart dhcpd.service
 
 mkdir -p /var/log/iot-wifi-ap
 
-sed -i /etc/rc.local -e 's#exit 0#./home/pi/iot-wifi-ap/run.sh\nexit 0#g'
+sed -i /etc/rc.local -e 's#^exit 0#./home/pi/iot-wifi-ap/run.sh\nexit 0#g'
