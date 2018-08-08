@@ -14,7 +14,7 @@ config = {}
 def exit():
   print("Terminating...")
 
-# Response example: {"Tp-Link": -87, "dd-wrt": -83, "CECCHI'S WIFI": -71}
+# Response example: [{"dbm": -77, "ssid": "dd-wrt"}, {"dbm": -83, "ssid": "Tp-Link"}]
 @app.route('/scan', methods=['GET'])
 def scan():
   networks = []
