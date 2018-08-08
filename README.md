@@ -28,10 +28,16 @@ The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
 
 - GET /scan - Returns a list of available Wi-Fi networks with signal quality. For example: 
 ````
-{
-  "network1" : "-76",
-  "network2" : "-45"
-}
+[
+  {
+    "ssid" : "Tp-Link",
+    "dbm" : -45
+  },
+  {
+    "ssid" : "My Wifi",
+    "ssid" : -76
+  } 
+]
 
 ````
 - GET /wpa-status - Returns the wpa_supplicant status. For example:

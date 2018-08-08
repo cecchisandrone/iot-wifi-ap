@@ -17,7 +17,7 @@ def exit():
 # Response example: {"Tp-Link": -87, "dd-wrt": -83, "CECCHI'S WIFI": -71}
 @app.route('/scan', methods=['GET'])
 def scan():
-  networks = {}
+  networks = []
   output = subprocess.check_output(["wpa_cli -i wlan0 scan"], stderr=subprocess.STDOUT, shell=True).strip()
   time.sleep(1)
   if output == "OK":
@@ -25,7 +25,10 @@ def scan():
     lines = output.splitlines()
     for line in lines:
       arr = line.split('|')
-      networks[arr[1]] = int(arr[0])
+      network = {}
+      network["ssid"] = arr[1]
+      network["dbm"] = int(arr[0])
+      networks.append(network)
   else:
     return 'Unable to scan for wifi networks', 500
   return json.dumps(networks), 200
