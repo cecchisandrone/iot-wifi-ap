@@ -18,13 +18,13 @@ At boot, `run.sh` is executed and the following steps are done:
 2. Start `hostapd`
 3. Start `dnsmasq`
 4. Start `wpa_supplicant`
-5. Start `wifi_service` python script to expose APIs (running on port 6000)
+5. Start `wifi_service` python script to expose APIs (running on port 8081)
 
 At this point the AP network is created, with the parameters defined into `hostapd.conf`. 
 You need to call the HTTP APIs to choose which network to join.
 
 ## API
-The following endpoints are available (Raspberry Pi IP is 192.168.27.1:6000):
+The following endpoints are available (Raspberry Pi IP is 192.168.27.1):
 
 - GET /scan - Returns a list of available Wi-Fi networks with signal quality. For example: 
 ````

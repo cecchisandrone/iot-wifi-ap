@@ -6,8 +6,10 @@ import subprocess
 import configparser
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 config = {}
 
 @atexit.register
@@ -50,9 +52,9 @@ def connect():
         for j in range(int(network_index)):
           subprocess.check_output(["wpa_cli","-i","wlan0","remove_network",str(j)], stderr=subprocess.STDOUT, shell=False).strip()
         subprocess.check_output(["wpa_cli -i wlan0 save_config"], shell=True)
-        return "SUCCESS", 200
+        return json.dumps({"result":"success"}), 200
       time.sleep(3)
-  return "FAILURE", 500
+  return json.dumps({"result":"failure"}), 500
 
 # Response example: {"group_cipher": "TKIP", "ssid": "Tp-Link", "bssid": "50:64:2b:2b:36:0e", "p2p_device_address": "aa:e8:af:51:86:c8", "wpa_state": "COMPLETED", "uuid": "ceecde00-5c31-5b88-aa3d-296871497f75", "mode": "station", "address": "b8:27:eb:e0:49:6f", "freq": "2427", "key_mgmt": "WPA2-PSK", "ip_address": "192.168.1.114", "id": "0", "pairwise_cipher": "CCMP"}
 @app.route('/wpa-status', methods=['GET'])
@@ -70,13 +72,13 @@ def connectivity_status():
   output = subprocess.check_output(["curl -sL -o /dev/null -w \"%{http_code}\" " + config['DEFAULT']['CONNECTIVITY_ENDPOINT']], stderr=subprocess.STDOUT, shell=True).strip()
   print(output)
   if output == '200':
-    return "SUCCESS", 200
+    return json.dumps({"result":"success"}), 200
   else:
-    return "FAILURE", 500
+    return json.dumps({"result":"failure"}), 500
 
 if __name__ == '__main__':
   print("Starting WI-FI service...")
   config = configparser.ConfigParser()
   config.read('wifi_service.cfg')
-  app.run(host='0.0.0.0', port=6000)
+  app.run(host='0.0.0.0', port=8081)
 
