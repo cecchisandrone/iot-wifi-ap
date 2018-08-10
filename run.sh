@@ -24,6 +24,10 @@ iw dev wlan0 interface add uap0 type __ap
 ifconfig uap0 192.168.27.1
 ifconfig uap0 up
 
+# Disable power management
+iw dev uap0 set power_save off
+iw dev wlan0 set power_save off
+
 # Enable traffic forwarding
 iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
 iptables -A FORWARD -i wlan0 -o uap0 -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -46,3 +50,4 @@ wpa_supplicant -D nl80211 -i wlan0 -c wpa_supplicant_ap.conf > /var/log/iot-wifi
 # Start wifi service
 python wifi_service.py > /var/log/iot-wifi-ap/wifi_service.log 2>&1 &
 
+systemctl restart avahi-daemon
